@@ -12,35 +12,36 @@
         input, select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
         button { grid-column: span 2; padding: 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
         
-        /* Document Styling */
         #loan-form { background: white; width: 210mm; margin: auto; border: 1px solid #ddd; box-sizing: border-box; display: none; }
         
-        /* Printing Layout Fixes */
-        .page { padding: 10mm 15mm; position: relative; min-height: 296mm; box-sizing: border-box; page-break-after: always; display: flex; flex-direction: column; }
+        .page { padding: 8mm 12mm; position: relative; min-height: 296mm; box-sizing: border-box; page-break-after: always; display: flex; flex-direction: column; }
         .page:last-child { page-break-after: auto; }
 
-        .header { text-align: center; line-height: 1.2; position: relative; margin-bottom: 10px; }
-        .header h2, .header h3 { margin: 2px 0; }
-        .header-row { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; border-bottom: 1px solid #000; padding-bottom: 5px; }
-        .header-left { flex: 1; text-align: left; font-weight: bold; }
-        .header-center { flex: 2; text-align: center; font-weight: bold; font-size: 1.1em; border: 1px solid #000; padding: 2px; }
-        .header-right { flex: 1; }
-
-        .office-use { border: 1px solid black; float: right; width: 250px; font-size: 11px; padding: 5px; margin-bottom: 5px; }
-        .main-table, .salary-table, .witness-table { width: 100%; border-collapse: collapse; margin-top: 5px; clear: both; }
-        .main-table td, .salary-table td, .salary-table th, .witness-table td, .witness-table th { border: 1px solid black; padding: 4px; font-size: 12px; }
-        .section-title { font-weight: bold; margin-top: 10px; text-decoration: underline; font-size: 14px; text-align: center; }
-        .stamp-box { border: 1px solid black; width: 70px; height: 80px; text-align: center; display: inline-block; font-size: 10px; padding-top: 10px; vertical-align: bottom; }
+        .header { text-align: center; line-height: 1.1; position: relative; margin-bottom: 5px; }
+        .header h2 { margin: 2px 0; font-size: 18px; }
+        .header h3 { margin: 2px 0; font-size: 16px; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; border-bottom: 1px solid #000; padding-bottom: 3px; }
         
-        p { margin: 6px 0; font-size: 13px; line-height: 1.4; text-align: justify; }
+        .office-use { border: 1px solid black; float: right; width: 230px; font-size: 10px; padding: 4px; margin-bottom: 5px; line-height: 1.2; }
+        
+        /* टेबल स्टाईल्स आणि रो हाईट वाढवण्यासाठी बदल */
+        .main-table, .salary-table, .witness-table { width: 100%; border-collapse: collapse; margin-top: 3px; clear: both; }
+        .main-table td { border: 1px solid black; padding: 10px 8px; font-size: 13px; } /* Row height increased via padding */
+        .salary-table td, .salary-table th, .witness-table td, .witness-table th { border: 1px solid black; padding: 5px; font-size: 12px; }
+        
+        .section-title { font-weight: bold; margin-top: 8px; text-decoration: underline; font-size: 14px; text-align: center; }
+        
+        p { margin: 4px 0; font-size: 12.5px; line-height: 1.3; text-align: justify; }
+
+        /* पावतीसाठी नवीन बॉर्डर बॉक्स */
+        .receipt-box { border: 2px solid black; padding: 10px; margin-top: 10px; }
 
         @media print {
             @page { size: A4; margin: 0; }
             body { background: white; padding: 0; margin: 0; }
             .no-print { display: none; }
             #loan-form { display: block; border: none; width: 210mm; }
-            .page { border: none; padding: 15mm; }
-            hr { display: none; }
+            .page { border: none; }
         }
     </style>
 </head>
@@ -57,6 +58,8 @@
         <div class="input-group"><label>Employee Code No:</label><input type="text" id="i_ecode"></div>
         <div class="input-group"><label>बँक खाते क्रमांक:</label><input type="text" id="i_bank"></div>
         <div class="input-group"><label>मोबाईल क्रमांक:</label><input type="text" id="i_mobile" maxlength="10"></div>
+        <div class="input-group"><label>विभागाचा दूरध्वनी क्रमांक:</label><input type="text" id="i_dept_phone"></div>
+        <div class="input-group"><label>सेवानिवृत्तीची तारीख:</label><input type="date" id="i_retirement_date"></div>
         
         <div class="input-group"><label>महिना व वर्ष १:</label><input type="month" id="i_m1"></div>
         <div class="input-group"><label>निव्वळ वेतन (१):</label><input type="number" id="s1"></div>
@@ -85,9 +88,9 @@
             <h2>शिवाजी विद्यापीठ प्रशासकीय सेवक कल्याण निधी योजना, कोल्हापूर.</h2>
             <h3>शिवाजी विद्यापीठ, कोल्हापूर.</h3>
             <div class="header-row">
-                <div class="header-left">अर्ज क्रमांक :- <span id="o_form_no"></span></div>
-                <div class="header-center">कर्ज मागणी अर्ज</div>
-                <div class="header-right"></div>
+                <div style="font-weight: bold;">अर्ज क्रमांक :- <span id="o_form_no"></span></div>
+                <div style="font-weight: bold; font-size: 1.1em; border: 1px solid #000; padding: 2px 10px;">कर्ज मागणी अर्ज</div>
+                <div></div>
             </div>
         </div>
 
@@ -109,11 +112,11 @@
             <tr><td>४. CCPL No. :- <span id="o_ccpl"></span></td><td>Employee Code No. :- <span id="o_ecode"></span></td></tr>
             <tr><td>५. युको बँक खाते क्रमांक :-</td><td id="o_bank"></td></tr>
             <tr><td>६. अर्जदाराचा मोबाईल क्रमांक :-</td><td id="o_mobile"></td></tr>
-            <tr><td>७. विभागाचा दूरध्वनी क्रमांक</td><td></td></tr>
-            <tr><td>८. सेवानिवृत्तीची तारीख :-</td><td></td></tr>
+            <tr><td>७. विभागाचा दूरध्वनी क्रमांक</td><td id="o_dept_phone"></td></tr>
+            <tr><td>८. सेवानिवृत्तीची तारीख :-</td><td id="o_retirement_date"></td></tr>
         </table>
 
-        <p style="font-size: 11px; margin-top: 10px;">मागील तीन महिन्याच्या वेतनाचा तपशील, सरासरी वेतन, कर्ज मागणीचे कारण व कर्ज मागणी रक्कम इ.</p>
+        <p style="font-size: 11px; margin-top: 5px;">मागील तीन महिन्याच्या वेतनाचा तपशील, सरासरी वेतन, कर्ज मागणीचे कारण व कर्ज मागणी रक्कम इ.</p>
 
         <table class="salary-table">
             <thead>
@@ -129,7 +132,7 @@
             </tbody>
         </table>
 
-        <table class="salary-table" style="margin-top: 10px; font-size: 10px;">
+        <table class="salary-table" style="margin-top: 5px; font-size: 10px;">
             <thead>
                 <tr>
                     <th>मागील तीन महिन्यांचे सरासरी वेतन</th><th>कर्ज मर्यादा रूपये</th><th>दरमहा हप्ता</th>
@@ -137,61 +140,63 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>रू. 5001/ ते रू. 7000/- वर्ग 4 मधील सभासदांकरिता</td><td>30,000</td><td>875</td><td>रू. 16001/ ते रू. 19,000/- सर्व सभासदांकरिता</td><td>70,000</td><td>2042</td></tr>
-                <tr><td>रू. 7001/ ते रू. 10,000/- सर्व सभासदांकरिता</td><td>40,000</td><td>1167</td><td>रू. 19001/ ते रू. 21,000/- सर्व सभासदांकरिता</td><td>80,000</td><td>2334</td></tr>
-                <tr><td>रू. 10001/ ते रू. 13,000/- सर्व सभासदांकरिता</td><td>50,000</td><td>1459</td><td>रू. 21001/ ते रू. 24,000/- सर्व सभासदांकरिता</td><td>90,000</td><td>2625</td></tr>
-                <tr><td>रू. 13001/ ते रू. 16,000/- सर्व सभासदांकरिता</td><td>60,000</td><td>1750</td><td>रू. 24001/ च्या पुढे</td><td>1,00,000</td><td>2917</td></tr>
+                <tr><td>रू. 5001/ ते रू. 7000/-</td><td>30,000</td><td>875</td><td>रू. 16001/ ते रू. 19,000/-</td><td>70,000</td><td>2042</td></tr>
+                <tr><td>रू. 7001/ ते रू. 10,000/-</td><td>40,000</td><td>1167</td><td>रू. 19001/ ते रू. 21,000/-</td><td>80,000</td><td>2334</td></tr>
+                <tr><td>रू. 10001/ ते रू. 13,000/-</td><td>50,000</td><td>1459</td><td>रू. 21001/ ते रू. 24,000/-</td><td>90,000</td><td>2625</td></tr>
+                <tr><td>रू. 13001/ ते रू. 16,000/-</td><td>60,000</td><td>1750</td><td>रू. 24001/ च्या पुढे</td><td>1,00,000</td><td>2917</td></tr>
             </tbody>
         </table>
+
+        <div style="margin-top: 8px;">
+            <p>मी आपल्या संस्थेचे सर्व नियम व अटी वाचले आहेत. सध्याचे नियम, अटी व त्यामध्ये पुढील काळामध्ये होणारे बदल माझ्यावर बंधनकारक असून ते मला मान्य आहेत. तरी या योजनेच्या कार्यकारणी समितीने माझ्या अर्जाचा सहानुभूतीपूर्वक विचार करून मला कर्ज मंजूर करावे ही नम्र विनंती.</p>
+            <div style="display: flex; justify-content: space-between; margin-top: 2px;">
+                <span>कळावे,</span>
+                <span style="text-align: right;">आपला/आपली विश्वासू,</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 20px; align-items: flex-end;">
+                <span>दिनांक :-</span>
+                <span style="text-align: right; line-height: 1.1;">
+                    .......................................<br>
+                    अर्जदाराची स्वाक्षरी
+                </span>
+            </div>
+        </div>
     </div>
 
     <div class="page">
-        <p>मी आपल्या संस्थेचे सर्व नियम व अटी वाचले आहेत. सध्याचे नियम, अटी व त्यामध्ये पुढील काळामध्ये होणारे बदल माझ्यावर बंधनकारक असून ते मला मान्य आहेत. तरी या योजनेच्या कार्यकारणी समितीने माझ्या अर्जाचा सहानुभूतीपूर्वक विचार करून मला कर्ज मंजूर करावे ही नम्र विनंती.</p>
-        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-            <span>कळावे,</span>
-            <span style="text-align: right;">आपला/आपली विश्वासू,</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-            <span>दिनांक :-</span>
-            <span style="text-align: right;">अर्जदाराची स्वाक्षरी</span>
-        </div>
-
-        <p style="text-align: center; margin-top: 15px; font-weight: bold;">-- 2 --</p>
+        <p style="text-align: center; font-weight: bold; margin-bottom: 5px;">-- 2 --</p>
         
         <p class="section-title">अधिकार पत्र</p>
-        <p>मी खाली सही करणार श्री./श्रीमती <span id="o_name2">.......................................</span> या लेख्याने मा. वित्त व लेखा अधिकारी यांना अधिकार देत आहे की, त्यांनी शिवाजी विद्यापीठ प्रशासकीय सेवक कल्याण निधी योजना, कोल्हापूर ही संस्था सांगेल तितकी, कर्जहप्ता व व्याजापोटी होणारी रक्कम माझे मासिक पगारातून कापून घेवून सदर संस्थेच्या खाती जमा करावी तसेच मी गैरहजर राहिल्यास अगर अन्य कारणाने माझी सेवा समाप्त झाल्यास माझे नावे कर्जाची फेड न झालेली रक्कम माझे रजा रोखीकरण, ग्रॅच्युईटी, प्रॉव्हीडंड फंड वगैरे विद्यापीठ मला जे काही देणे राहील त्या रक्कमेमधून कर्जाची संपूर्ण रक्कम व्याजासह कापून घ्यावी.</p>
-        <p style="text-align: right; margin-top: 10px;">अर्जदाराची स्वाक्षरी</p>
+        <p style="line-height: 3;">मी खाली सही करणार श्री./श्रीमती <span id="o_name2">.......................................</span> या लेख्याने मा. वित्त व लेखा अधिकारी यांना अधिकार देत आहे की, त्यांनी शिवाजी विद्यापीठ प्रशासकीय सेवक कल्याण निधी योजना, कोल्हापूर ही संस्था सांगेल तितकी, कर्जहप्ता व व्याजापोटी होणारी रक्कम माझे मासिक पगारातून कापून घेवून सदर संस्थेच्या खाती जमा करावी तसेच मी गैरहजर राहिल्यास अगर अन्य कारणाने माझी सेवा समाप्त झाल्यास माझे नावे कर्जाची फेड न झालेली रक्कम माझे रजा रोखीकरण, ग्रॅच्युईटी, प्रॉव्हीडंड फंड वगैरे विद्यापीठ मला जे काही देणे राईल त्या रक्कमेमधून कर्जाची संपूर्ण रक्कम व्याजासह कापून घ्यावी.</p>
+        <p style="text-align: right; margin-top: 5px;">अर्जदाराची स्वाक्षरी</p>
 
         <p class="section-title">प्रतिज्ञा पत्र</p>
-        <p>मी अर्जदार प्रतिज्ञापूर्वक नमूद करतो की, या अर्जामध्ये दिलेली माहिती व तपशील माझ्या माहितीप्रमाणे सत्य आहे. मी या योजनेतून मिळालेल्या कर्जाच्या रक्कमेचा विनियोग अर्जात लिहिलेल्या कारणासाठीच करीन. या कर्जाच्या रक्कमेची परतफेड करण्याची माझी वैयक्तिक जबाबदारी आहे. या रक्कमेचा दुरूपयोग होत असल्याचे कार्यकारणीच्या निदर्शनास आल्यास ती रक्कम एकरकमी माझ्या पगारातून वसूल करण्याचा अधिकारही कार्यकारणीस राहील याची मला जाणीव आहे.</p>
-        <p style="text-align: right; margin-top: 10px;">अर्जदाराची स्वाक्षरी</p>
+        <p style="line-height: 3;">मी अर्जदार प्रतिज्ञापूर्वक नमूद करतो की, या अर्जामध्ये दिलेली माहिती व तपशील माझ्या माहितीप्रमाणे सत्य आहे. मी या योजनेतून मिळालेल्या कर्जाच्या रक्कमेचा विनियोग अर्जात लिहिलेल्या कारणासाठीच करीन. या कर्जाच्या रक्कमेची परतफेड करण्याची माझी वैयक्तिक जबाबदारी आहे. या रक्कमेचा दुरूपयोग होत असल्याचे कार्यकारणीच्या निदर्शनास आल्यास ती रक्कम एकरकमी माझ्या पगारातून वसूल करण्याचा अधिकारही कार्यकारणीस राईल याची मला जाणीव आहे.</p>
+        <p style="text-align: right; margin-top: 5px;">अर्जदाराची स्वाक्षरी</p>
 
         <table class="witness-table">
-            <tr><th style="width: 10%;">अ.क्र.</th><th style="width: 45%;">साक्षीदार – कर्मचाऱ्याचे नाव</th><th style="width: 25%;">हूद्दा</th><th style="width: 20%;">स्वाक्षरी</th></tr>
-            <tr><td>1</td><td></td><td></td><td></td></tr>
-            <tr><td>2</td><td></td><td></td><td></td></tr>
+            <tr style="height:45px;"><th style="width: 10%;">अ.क्र.</th><th style="width: 45%;">साक्षीदार – कर्मचाऱ्याचे नाव</th><th style="width: 25%;">हूद्दा</th><th style="width: 20%;">स्वाक्षरी</th></tr>
+            <tr style="height:45px;"><td>1</td><td></td><td></td><td></td></tr>
+            <tr style="height:45px;"><td>2</td><td></td><td></td><td></td></tr>
         </table>
 
-        <p class="section-title" style="margin-top: 15px;">आगाऊ पोहोच पावती (Advanced Stamp Receipt)</p>
-        <p style="border: 1px solid black; padding: 8px; font-size: 12px;">शिवाजी विद्यापीठ प्रशासकीय सेवक कल्याण निधी योजनेमधून मंजूर झालेले कर्ज रक्कम रूपये ---------------------- चेक क्रमांक ------------------- दिनांक ----------------- नुसार मला मिळाली./ माझ्या बँक खात्यामध्ये जमा झाली आहे.</p>
-        
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px;">
-            <span>आभारी आहे.</span>
-            <span style="text-align: right;">आपला/आपली विश्वासू,</span>
+        <div class="receipt-box">
+            <p class="section-title" style="margin-top: 0px;">आगाऊ पोहोच पावती (Advanced Stamp Receipt)</p>
+            <p style="font-size: 11.5px; line-height: 3; margin-bottom: 10px;">शिवाजी विद्यापीठ प्रशासकीय सेवक कल्याण निधी योजनेमधून मंजूर झालेले कर्ज रक्कम रूपये ---------------------- चेक क्रमांक ------------------- दिनांक ----------------- नुसार मला मिळाली./ माझ्या बँक खात्यामध्ये जमा झाली आहे. आभारी आहे. आपला/आपली विश्वासू</p>
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 5px;">
+                <div style="text-align: center;">
+                    <div style="border: 1px solid black; width: 60px; height: 70px; text-align: center; display: inline-block; font-size: 9px; padding-top: 10px;">Revenue<br>Stamp</div>
+                    <p style="font-size: 9px; margin-bottom: 0px;">((अर्जदारांनी  एक रूपयाचे पावती तिकीट (Revenue Stamp) लावून स्वाक्षरी करावी.)</p>
+                </div>
+                <div style="text-align: right; line-height: 3;"> <span>दिनांक :- ....................</span><br><br><br>
+                    <span>अर्जदाराची स्वाक्षरी</span><br>
+                    <span style="font-size: 11.5px;">(नाव - <span id="o_name3">................................</span>)</span>
+                </div>
+            </div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px;">
-    <div style="text-align: center;">
-        <div class="stamp-box">Revenue<br>Stamp</div>
-        <p style="font-size: 9px; margin-bottom: 0px;">(पावती तिकीट लावून स्वाक्षरी करावी)</p>
-    </div>
-    <div style="text-align: right; line-height: 3.5;"> <span>दिनांक :- ....................</span><br>
-        <span>अर्जदाराची स्वाक्षरी</span><br>
-        <span style="line-height: 1;">(नाव - <span id="o_name3">................................</span>)</span>
-    </div>
-</div>
-
-        <p style="font-size: 11px; border-top: 1px solid #000; padding-top: 5px; margin-top: auto;">
+        <p style="font-size: 10.5px; border-top: 1px solid #000; padding-top: 4px; margin-top: auto;">
             <strong>महत्वाची सूचना :-</strong> सभासदांनी कर्ज मागणी अर्ज प्रत्येक महिन्याच्या 1 ते 5 तारखेपर्यंत जमा करावेत. जेणेकरून त्याच महिन्यात कर्ज वितरण करणे सोयीचे होईल. 5 तारखेनंतर येणाऱ्या अर्जांवर पुढील महिन्यात कार्यवाही करण्यात येईल.
         </p>
     </div>
@@ -216,6 +221,8 @@ function printForm() {
     document.getElementById('o_ecode').innerText = document.getElementById('i_ecode').value;
     document.getElementById('o_bank').innerText = document.getElementById('i_bank').value;
     document.getElementById('o_mobile').innerText = document.getElementById('i_mobile').value;
+    document.getElementById('o_dept_phone').innerText = document.getElementById('i_dept_phone').value;
+    document.getElementById('o_retirement_date').innerText = document.getElementById('i_retirement_date').value;
     
     document.getElementById('o_m1').innerText = document.getElementById('i_m1').value;
     document.getElementById('o_m2').innerText = document.getElementById('i_m2').value;
