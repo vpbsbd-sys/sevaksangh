@@ -238,14 +238,16 @@
 </div>
 
 <script>
+// Replace your existing printForm function with this
 function printForm() {
     const s1 = parseFloat(document.getElementById('s1').value) || 0;
     const s2 = parseFloat(document.getElementById('s2').value) || 0;
     const s3 = parseFloat(document.getElementById('s3').value) || 0;
     const total = s1 + s2 + s3;
-    const avg = total / 3;
+    const avg = (total / 3).toFixed(2);
     const name = document.getElementById('i_name').value;
 
+    // Mapping data to UI
     document.getElementById('o_form_no').innerText = document.getElementById('i_form_no').value;
     document.getElementById('o_name').innerText = name;
     document.getElementById('o_name2').innerText = name;
@@ -259,22 +261,46 @@ function printForm() {
     document.getElementById('o_dept_phone').innerText = document.getElementById('i_dept_phone').value;
     document.getElementById('o_retirement_date').innerText = document.getElementById('i_retirement_date').value;
     
-    document.getElementById('o_m1').innerText = document.getElementById('i_m1').value;
-    document.getElementById('o_m2').innerText = document.getElementById('i_m2').value;
-    document.getElementById('o_m3').innerText = document.getElementById('i_m3').value;
-    
     document.getElementById('o_s1').innerText = s1;
     document.getElementById('o_s2').innerText = s2;
     document.getElementById('o_s3').innerText = s3;
     document.getElementById('o_total').innerText = total;
-    document.getElementById('o_avg').innerText = avg.toFixed(2);
+    document.getElementById('o_avg').innerText = avg;
     document.getElementById('o_reason').innerText = document.getElementById('i_reason').value;
     document.getElementById('o_req_amt').innerText = document.getElementById('i_req_amt').value;
 
+    // Trigger the Sheet Save
+    saveToSheet(avg);
+
+    // Open print dialog
     window.print();
 }
-</script>
+
+function saveToSheet(avg) {
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz3f_qEuPeH5y7imYVwJ_zFk3eR95j5880dJk7MKzPUcnIZm2CKPYAQOth1lYaOyBghBA/exec'; // PASTE YOUR URL HERE
+    
+    const formData = new FormData();
+    formData.append('form_no', document.getElementById('i_form_no').value);
+    formData.append('name', document.getElementById('i_name').value);
+    formData.append('designation', document.getElementById('i_desig').value);
+    formData.append('department', document.getElementById('i_dept').value);
+    formData.append('ccpl', document.getElementById('i_ccpl').value);
+    formData.append('ecode', document.getElementById('i_ecode').value);
+    formData.append('bank', document.getElementById('i_bank').value);
+    formData.append('mobile', document.getElementById('i_mobile').value);
+    formData.append('dept_phone', document.getElementById('i_dept_phone').value);
+    formData.append('retirement_date', document.getElementById('i_retirement_date').value);
+    formData.append('avg_salary', avg);
+    formData.append('reason', document.getElementById('i_reason').value);
+    formData.append('req_amount', document.getElementById('i_req_amt').value);
+
+    fetch(scriptURL, { method: 'POST', body: formData})
+      .then(response => console.log('Success!', response))
+      .catch(error => console.error('Error!', error.message));
+}</script>
 </body>
 </html>
+
+
 
 
